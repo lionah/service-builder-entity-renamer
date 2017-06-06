@@ -1,1 +1,1 @@
-java -jar "dist/Playground.jar"
+java -jar "dist/Playground.jar" $@

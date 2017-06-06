@@ -20,18 +20,24 @@
  * SOFTWARE.
  */
 
-package com.lionah;
-
-import com.lionah.servicebuilderentityrenamer.ServiceBuilderEntityRenamer;
+package com.lionah.servicebuilderentityrenamer;
 
 import java.io.File;
 
-public class Runner {
+public class ServiceBuilderEntityRenamer {
 
-	public static void main(String[] args) {
-		ServiceBuilderEntityRenamer renamer = new ServiceBuilderEntityRenamer(new File(args[0]), args[1], args[2]);
+	public final File dir;
+	public final String fromEntityName;
+	public final String toEntityName;
 
-		renamer.run();
+	public ServiceBuilderEntityRenamer(File dir, String fromEntityName, String toEntityName) {
+		this.dir = dir;
+		this.fromEntityName = fromEntityName;
+		this.toEntityName = toEntityName;
+	}
+
+	public void run() {
+		(new FileRenamer(this)).run();
 	}
 
 }

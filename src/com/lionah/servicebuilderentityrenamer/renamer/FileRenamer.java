@@ -20,18 +20,49 @@
  * SOFTWARE.
  */
 
-package com.lionah;
+package com.lionah.servicebuilderentityrenamer.renamer;
 
 import com.lionah.servicebuilderentityrenamer.ServiceBuilderEntityRenamer;
 
 import java.io.File;
 
-public class Runner {
+public class FileRenamer {
 
-	public static void main(String[] args) {
-		ServiceBuilderEntityRenamer renamer = new ServiceBuilderEntityRenamer(new File(args[0]), args[1], args[2]);
-
-		renamer.run();
+	public FileRenamer(ServiceBuilderEntityRenamer serviceBuilderEntityRenamer) {
+		_renamer = serviceBuilderEntityRenamer;
 	}
+
+	public void run() {
+		_rename(_renamer.dir);
+	}
+
+	private void _rename(File dir) {
+		File[] files = dir.listFiles();
+
+		for (File file : files) {
+			if (file.isDirectory()) {
+				_rename(file);
+			}
+			else {
+				String fileName = file.getName();
+
+				String newFileName = fileName.replace(_renamer.fromEntityName, _renamer.toEntityName);
+
+				if (fileName.equals(newFileName)) {
+					System.out.println("[file] _: " + fileName);
+
+					continue;
+				}
+
+				System.out.println("[file] renamed: " + file.getAbsolutePath() + " -> " + newFileName);
+
+				File newFile = new File(dir, newFileName);
+
+				file.renameTo(newFile);
+			}
+		}
+	}
+
+	private ServiceBuilderEntityRenamer _renamer;
 
 }
