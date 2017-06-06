@@ -39,7 +39,7 @@
 		>
 			<manifest>
 				<attribute name="Class-Path" value="${jar.classpath}" />
-				<attribute name="Main-Class" value="playground.runner.Runner" />
+				<attribute name="Main-Class" value="com.lionah.Runner" />
 			</manifest>
 		</jar>
 	</target>
