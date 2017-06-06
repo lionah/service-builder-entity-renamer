@@ -1,0 +1,46 @@
+<project name="Playground" default="dist" basedir=".">
+	<property name="classes" location="classes"/>
+	<property name="dist" location="dist"/>
+	<property name="lib" location="lib"/>
+	<property name="src" location="src"/>
+
+	<path id="classpath">
+		<fileset dir="lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<delete dir="${classes}"/>
+		<delete dir="${dist}"/>
+	</target>
+
+	<target name="compile">
+		<mkdir dir="${classes}"/>
+
+		<javac
+			classpathref="classpath"
+			destdir="${classes}"
+			includeantruntime="false"
+			srcdir="${src}"
+		/>
+	</target>
+
+	<target name="dist" depends="compile">
+		<mkdir dir="${dist}"/>
+
+		<manifestclasspath property="jar.classpath" jarfile="dist\Playground.jar">
+			<classpath refid="classpath"/>
+		</manifestclasspath>
+
+		<jar
+			jarfile="${dist}/Playground.jar"
+			basedir="${classes}"
+		>
+			<manifest>
+				<attribute name="Class-Path" value="${jar.classpath}" />
+				<attribute name="Main-Class" value="playground.runner.Runner" />
+			</manifest>
+		</jar>
+	</target>
+</project>
