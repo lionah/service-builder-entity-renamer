@@ -48,10 +48,9 @@ public class Runner {
 				renamer.setRenameFilename(false);
 			}
 			else if (flag.equals("--disable-content-rename")) {
-				renamer.setRenameFilename(false);
+				renamer.setRenameContent(false);
 			}
 			else {
-				System.out.println("u");
 				_printUsage();
 
 				return;
