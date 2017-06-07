@@ -22,47 +22,30 @@
 
 package com.lionah.servicebuilderentityrenamer.renamer;
 
-import com.lionah.servicebuilderentityrenamer.ServiceBuilderEntityRenamer;
-
 import java.io.File;
+import java.io.FileFilter;
 
-public class FileRenamer {
+public class RenamerFileFilter implements FileFilter {
 
-	public FileRenamer(ServiceBuilderEntityRenamer serviceBuilderEntityRenamer) {
-		_renamer = serviceBuilderEntityRenamer;
-	}
-
-	public void run() {
-		_rename(_renamer.dir);
-	}
-
-	private void _rename(File dir) {
-		File[] files = dir.listFiles();
-
-		for (File file : files) {
-			if (file.isDirectory()) {
-				_rename(file);
-			}
-			else {
-				String fileName = file.getName();
-
-				String newFileName = fileName.replace(_renamer.fromEntityName, _renamer.toEntityName);
-
-				if (fileName.equals(newFileName)) {
-					System.out.println("[file] _: " + fileName);
-
-					continue;
-				}
-
-				System.out.println("[file] renamed: " + file.getAbsolutePath() + " -> " + newFileName);
-
-				File newFile = new File(dir, newFileName);
-
-				file.renameTo(newFile);
-			}
+	public boolean accept(File pathname) {
+		if (!pathname.isDirectory()) {
+			return true;
 		}
-	}
 
-	private ServiceBuilderEntityRenamer _renamer;
+		boolean accept = true;
+
+		switch(pathname.getName()) {
+			case ".git":
+			case "build":
+			case "classes":
+			case "dist":
+				accept = false;
+
+				break;
+			default:
+		}
+
+		return accept;
+	}
 
 }

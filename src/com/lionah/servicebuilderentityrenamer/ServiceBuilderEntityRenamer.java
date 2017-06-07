@@ -22,22 +22,69 @@
 
 package com.lionah.servicebuilderentityrenamer;
 
+import com.lionah.servicebuilderentityrenamer.renamer.ContentRenamer;
+import com.lionah.servicebuilderentityrenamer.renamer.FilenameRenamer;
+
 import java.io.File;
+
+import java.util.Map;
+import java.util.HashMap;
 
 public class ServiceBuilderEntityRenamer {
 
-	public final File dir;
-	public final String fromEntityName;
-	public final String toEntityName;
-
 	public ServiceBuilderEntityRenamer(File dir, String fromEntityName, String toEntityName) {
-		this.dir = dir;
-		this.fromEntityName = fromEntityName;
-		this.toEntityName = toEntityName;
+		_dir = dir;
+		_fromEntityName = fromEntityName;
+		_toEntityName = toEntityName;
 	}
 
 	public void run() {
-		(new FileRenamer(this)).run();
+
+		// Files
+
+		if (_renameFilenameEnabled) {
+			FilenameRenamer.run(_dir, _fromEntityName, _toEntityName);
+			FilenameRenamer.run(_dir, _getJSPEntityName(_fromEntityName), _getJSPEntityName(_toEntityName));
+		}
+
+		// Contents
+
+		if (_renameContentEnabled) {
+			ContentRenamer.run(_dir, _fromEntityName, _toEntityName);
+			ContentRenamer.run(_dir, _getJSPEntityName(_fromEntityName), _getJSPEntityName(_toEntityName));
+			ContentRenamer.run(_dir, _getVariableEntityName(_fromEntityName), _getVariableEntityName(_toEntityName));
+		}
 	}
+
+	public void setRenameFilename(boolean enabled) {
+		_renameFilenameEnabled = enabled;
+	}
+
+	public void setRenameContent(boolean enabled) {
+		_renameContentEnabled = enabled;
+	}
+
+	private String _getJSPEntityName(String name) {
+		name = name.replaceAll("([A-Z][^A-Z])", "_$1");
+
+		name = name.replaceAll("([^A-Z_])([A-Z])", "$1_$2");
+
+		return name.toLowerCase().substring(1);
+	}
+
+	private String _getVariableEntityName(String name) {
+		char[] chars = name.toCharArray();
+
+		chars[0] = Character.toLowerCase(chars[0]);
+
+		return new String(chars);
+	}
+
+	private final File _dir;
+	private final String _fromEntityName;
+	private final String _toEntityName;
+
+	private boolean _renameFilenameEnabled = true;
+	private boolean _renameContentEnabled = true;
 
 }
