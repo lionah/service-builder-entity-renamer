@@ -52,6 +52,8 @@ public class ServiceBuilderEntityRenamer {
 		if (_renameContentEnabled) {
 			ContentRenamer.run(_dir, _fromEntityName, _toEntityName);
 			ContentRenamer.run(_dir, _getJSPEntityName(_fromEntityName), _getJSPEntityName(_toEntityName));
+			ContentRenamer.run(_dir, _getKababEntityName(_fromEntityName), _getKababEntityName(_toEntityName));
+			ContentRenamer.run(_dir, _getStaticVariableEntityName(_fromEntityName), _getStaticVariableEntityName(_toEntityName));
 			ContentRenamer.run(_dir, _getVariableEntityName(_fromEntityName), _getVariableEntityName(_toEntityName));
 		}
 	}
@@ -65,11 +67,23 @@ public class ServiceBuilderEntityRenamer {
 	}
 
 	private String _getJSPEntityName(String name) {
+		return _getSnakeCaseEntityName.toLowerCase();
+	}
+
+	private String _getKababEntityName(String name) {
+		return _getSnakeCaseEntityName.replace("_", "-");
+	}
+
+	private String _getStaticVariableEntityName(String name) {
+		return _getSnakeCaseEntityName.toUpperCase();
+	}
+
+	private String _getSnakeCaseEntityName(String name) {
 		name = name.replaceAll("([A-Z][^A-Z])", "_$1");
 
 		name = name.replaceAll("([^A-Z_])([A-Z])", "$1_$2");
 
-		return name.toLowerCase().substring(1);
+		return name.substring(1);
 	}
 
 	private String _getVariableEntityName(String name) {
