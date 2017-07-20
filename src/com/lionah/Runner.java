@@ -35,7 +35,7 @@ public class Runner {
 		String[] arguments = _getArguments(args);
 		String[] flags = _getFlags(args);
 
-		if (arguments.length != 3 || arguments.length != 5) {
+		if (arguments.length != 3 && arguments.length != 5) {
 			_printUsage();
 
 			return;
