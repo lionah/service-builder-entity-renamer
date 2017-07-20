@@ -67,15 +67,15 @@ public class ServiceBuilderEntityRenamer {
 	}
 
 	private String _getJSPEntityName(String name) {
-		return _getSnakeCaseEntityName.toLowerCase();
+		return _getSnakeCaseEntityName(name).toLowerCase();
 	}
 
 	private String _getKababEntityName(String name) {
-		return _getSnakeCaseEntityName.replace("_", "-");
+		return _getSnakeCaseEntityName(name).replace("_", "-");
 	}
 
 	private String _getStaticVariableEntityName(String name) {
-		return _getSnakeCaseEntityName.toUpperCase();
+		return _getSnakeCaseEntityName(name).toUpperCase();
 	}
 
 	private String _getSnakeCaseEntityName(String name) {

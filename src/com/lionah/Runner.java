@@ -35,13 +35,21 @@ public class Runner {
 		String[] arguments = _getArguments(args);
 		String[] flags = _getFlags(args);
 
-		if (arguments.length != 3) {
+		if (arguments.length != 3 || arguments.length != 5) {
 			_printUsage();
 
 			return;
 		}
 
-		ServiceBuilderEntityRenamer renamer = new ServiceBuilderEntityRenamer(new File(arguments[0]), arguments[1], arguments[2]);
+		if (arguments.length == 5) {
+			rename(arguments[0], arguments[3], arguments[4], flags);
+		}
+
+		rename(arguments[0], arguments[1], arguments[2], flags);
+	}
+
+	public static void rename(String dir, String oldName, String newName, String[] flags) {
+		ServiceBuilderEntityRenamer renamer = new ServiceBuilderEntityRenamer(new File(dir), oldName, newName);
 
 		for (String flag : flags) {
 			if (flag.equals("--disable-filename-rename")) {
@@ -85,7 +93,7 @@ public class Runner {
 	}
 
 	private static void _printUsage() {
-		System.out.println("usage: ./run directory from_entity to_entity");
+		System.out.println("usage: ./run directory from_entity to_entity [from_entity_plural to_entity_plural]");
 		System.out.println("\t--disable-content-rename          Renamer will skip over contents of files");
 		System.out.println("\t--disable-filename-rename         Renamer will not rename files");
 	}
